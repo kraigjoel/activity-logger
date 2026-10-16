@@ -1,4 +1,4 @@
-from database import initialise_database, insert_activity
+from server.database import initialise_database, insert_activity
 
 initialise_database()
 
