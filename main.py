@@ -1,3 +1,7 @@
+from database import initialise_database, insert_activity
+
+initialise_database()
+
 activities = {
     1: 'coding',
     2: 'ccna study',
@@ -40,6 +44,14 @@ notes = input("Notes (optional): ").strip()
 
 if notes == "":
     notes = None
+
+log_id = insert_activity(
+    activities[selection],
+    duration,
+    notes
+)
+
+print(f"\nActivity logged successfully! ID: {log_id}")
 
 print("\n=== Activity Summary ===")
 print(f"Activity: {activities[selection]}")
