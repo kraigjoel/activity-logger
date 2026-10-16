@@ -11,7 +11,14 @@ print("=== Activity Logger ===")
 for number, activity in activities.items():
     print(f"{number}. {activity}")
 
-selected_activity = int(input("Select an activity (1-5): "))
+while True: 
+    selection = input("Select activity: ")
+    if selection.isdigit():
+        selection = int(selection)
 
-print(activities[selected_activity])
+        if selection in activities:
+            break
 
+    print("Invalid activity, please try again.")
+
+print(f"Selected: {activities[selection]}")
