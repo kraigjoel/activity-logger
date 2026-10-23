@@ -35,6 +35,21 @@ def insert_activity(activity, duration, notes):
     finally:
         connection.close()
 
+def get_all_activities():
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    cursor = connection.execute('SELECT * FROM activity_logs')
+    rows = cursor.fetchall()
+    activity_records = [dict(row) for row in rows]
+    connection.close()
+    return activity_records
+
+    
+
 if __name__ == "__main__":
     initialise_database()
     print("Database initialised successfully!")
+
+    activities = get_all_activities()
+    for activity in activities:
+        print(activity)
