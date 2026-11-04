@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from .database import *
-from pydantic import BaseModel
+from .database import get_all_activities, insert_activity
+from pydantic import BaseModel, Field
 
 app = FastAPI()
 
 class ActivityCreate(BaseModel):
     activity: str
-    duration: int
+    duration: int = Field(gt=0)
     notes: str | None = None
 
 @app.get("/health")
