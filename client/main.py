@@ -3,13 +3,14 @@ import requests
 BASE_URL = "http://127.0.0.1:8000"
 
 def view_activities():
+    print("\nConnecting to server...")
     try:
         response = requests.get(f"{BASE_URL}/activities", timeout=5)
-        print("Connected to server!")
+        print("\nConnected to server!\n")
 
     except (requests.exceptions.ConnectionError,
             requests.exceptions.Timeout):
-        print("Cannot connect to the server.")
+        print("\nCannot connect to the server.")
         return
     
     activities = response.json()
@@ -48,14 +49,20 @@ def log_activity():
     try:
         response = requests.post(f"{BASE_URL}/activities",json=log_dict,
                                   timeout=5)
+        response.raise_for_status()
+        
         print("Connected to server!")
 
+    except requests.exceptions.HTTPError:
+        print(f"\nServer returned HTTP {response.status_code}")
+        return
+
     except requests.exceptions.ConnectionError:
-        print("Connection failed. The activity may or may not have been saved.")
+        print("\nConnection failed. The activity may or may not have been saved.")
         return
 
     except requests.exceptions.Timeout:
-        print("Request timed out. Check your activities before retrying.")
+        print("\nRequest timed out. Check your activities before retrying.")
         return
 
     print(f"HTTP Status: {response.status_code}")

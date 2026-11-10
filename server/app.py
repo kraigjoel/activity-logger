@@ -18,7 +18,7 @@ def get_activities():
     activities = get_all_activities()
     return activities
 
-@app.post("/activities")
+@app.post("/activities", status_code=201)
 def create_activity(activity: ActivityCreate):
     log_id = insert_activity(activity.activity, activity.duration, activity.notes)
 
