@@ -3,9 +3,17 @@ import requests
 BASE_URL = "http://127.0.0.1:8000"
 
 def view_activities():
-    response = requests.get(f"{BASE_URL}/activities")
-    activities = response.json()
+    try:
+        response = requests.get(f"{BASE_URL}/activities", timeout=5)
+        print("Connected to server!")
+
+    except (requests.exceptions.ConnectionError,
+            requests.exceptions.Timeout):
+        print("Cannot connect to the server.")
+        return
     
+    activities = response.json()
+
     for activity in activities:
         notes = activity['notes']
         if not notes:
