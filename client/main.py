@@ -25,7 +25,18 @@ def view_activities():
 
 def log_activity():
     activity = input("Activity: ")
-    duration = int(input("Duration (minutes): "))
+    while True:
+        duration_input = input("Duration (minutes): ")
+
+        try:
+            duration = int(duration_input)
+            if duration > 0:
+                break
+            else:
+                print("Please enter a positive integer")
+
+        except ValueError:
+            print("Please enter a valid whole number")
     notes = input("Notes (optional): ")
 
     log_dict = {
@@ -34,7 +45,18 @@ def log_activity():
         "notes": notes
     }
 
-    response = requests.post(f"{BASE_URL}/activities",json=log_dict)
+    try:
+        response = requests.post(f"{BASE_URL}/activities",json=log_dict,
+                                  timeout=5)
+        print("Connected to server!")
+
+    except requests.exceptions.ConnectionError:
+        print("Connection failed. The activity may or may not have been saved.")
+        return
+
+    except requests.exceptions.Timeout:
+        print("Request timed out. Check your activities before retrying.")
+        return
 
     print(f"HTTP Status: {response.status_code}")
     print(response.json())
