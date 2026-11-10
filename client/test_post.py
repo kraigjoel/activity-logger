@@ -8,4 +8,7 @@ new_activity = {
     "notes": "Practised subnetting"
 }
 
-response = requests.post(url, json=)
+response = requests.post(url, json=new_activity)
+
+print(f"HTTP Status: {response.status_code}")
+print(response.json())
