@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from .database import get_all_activities, insert_activity, initialise_database
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -12,9 +12,20 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 class ActivityCreate(BaseModel):
-    activity: str
+    activity: str = Field(min_length=1)
     duration: int = Field(gt=0)
     notes: str | None = None
+
+    @field_validator("activity")
+    @classmethod
+    def validate_activity(cls,value):
+        activity = value.strip()
+
+        if not activity:
+            raise ValueError("Activity name cannot be empty")
+
+        return activity
+
 
 @app.get("/health")
 def get_health():
