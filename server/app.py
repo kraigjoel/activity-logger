@@ -1,15 +1,15 @@
 from fastapi import FastAPI
-from .database import get_all_activities, insert_activity, initialize_database
+from .database import get_all_activities, insert_activity, initialise_database
 from pydantic import BaseModel, Field
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    initialize_database()
+    initialise_database()
     yield
     
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 class ActivityCreate(BaseModel):
     activity: str
