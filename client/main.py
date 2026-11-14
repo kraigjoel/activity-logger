@@ -6,15 +6,29 @@ def view_activities():
     print("\nConnecting to server...")
     try:
         response = requests.get(f"{BASE_URL}/activities", timeout=5)
-        print("\nConnected to server!\n")
+        response.raise_for_status()
+
+    except requests.exceptions.HTTPError:
+        print(f"\nServer returned HTTP {response.status_code}")
+        return
 
     except (requests.exceptions.ConnectionError,
             requests.exceptions.Timeout):
         print("\nCannot connect to the server.")
         return
-    
-    activities = response.json()
 
+    print("\nConnected to server!\n")
+    try:
+        activities = response.json()
+
+    except requests.exceptions.JSONDecodeError:
+        print("Server responded with non-json format")
+        return
+
+    if not activities:
+        print("No activities logged yet")
+        return
+    
     for activity in activities:
         notes = activity['notes']
         if not notes:
