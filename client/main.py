@@ -39,8 +39,20 @@ def view_activities():
         print(f"Notes: {notes}\n")
 
 def log_activity():
-    activity = input("Activity: ")
+
     while True:
+        activity = input("Activity: ").strip()
+
+        if not activity:
+            print("Activity name cannot be empty.")
+
+        else:
+            break
+        
+    
+    
+    while True:
+
         duration_input = input("Duration (minutes): ")
 
         try:
@@ -52,6 +64,7 @@ def log_activity():
 
         except ValueError:
             print("Please enter a valid whole number")
+    
     notes = input("Notes (optional): ")
 
     log_dict = {
