@@ -14,5 +14,14 @@ services:
     volumes:
       - activity_data:/data
 
+    networks:
+      - default
+      - proxy
+
 volumes:
   activity_data:
+
+networks:
+  proxy:
+    external: true
+
