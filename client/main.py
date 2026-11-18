@@ -1,6 +1,10 @@
 import requests
+import os
 
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = os.getenv(
+    "ACTIVITY_API_URL",
+    "http://127.0.0.1:8000"
+).rstrip("/")
 
 def view_activities():
     print("\nConnecting to server...")

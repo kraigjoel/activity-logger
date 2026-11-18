@@ -1,7 +1,13 @@
 import sqlite3
 from pathlib import Path
+import os
 
-DB_PATH = Path(__file__).resolve().parent / "activities.db"
+DB_PATH = Path(
+    os.getenv(
+        "ACTIVITY_DB_PATH",
+        str(Path(__file__).resolve().parent / "activities.db")
+    )
+)
 
 def initialise_database():
     connection = sqlite3.connect(DB_PATH)
